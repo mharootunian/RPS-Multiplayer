@@ -24,11 +24,14 @@ function nameValidation(name) {
     nameInput.prop("disabled", true)
     gameInput.prop("disabled", false)
     gameSubmit.prop("disabled", false)
+    rock.prop("disabled", false)
+    paper.prop("disabled", false)
+    scissors.prop("disabled", false)
   }
 }
 
 function joingGame() {
-  db.ref().once("value", function(snapshot) {
+  db.ref().once("value", function (snapshot) {
     let data = snapshot.val()
     if (data.players === 2) {
       startGame()
@@ -40,11 +43,11 @@ function joingGame() {
   })
 }
 
-rock.prop("disabled", "true")
-paper.prop("disabled", "true")
-scissors.prop("disabled", "true")
-gameSubmit.prop("disabled", "true")
-gameInput.prop("disabled", "true")
+rock.prop("disabled", true)
+paper.prop("disabled", true)
+scissors.prop("disabled", true)
+gameSubmit.prop("disabled", true)
+gameInput.prop("disabled", true)
 
 var firebaseConfig = {
   apiKey: "AIzaSyAe5LFUQ4xcX82zYTlVqrHtkV9SBF2Lw0Q",
@@ -60,11 +63,11 @@ firebase.initializeApp(firebaseConfig);
 
 let db = firebase.database()
 
-$(function() {
+$(function () {
 
   //db.ref().on("")
 
-  rock.click(function() {
+  rock.click(function () {
     db.ref().push({
       name: name,
       choice: "rock"
@@ -72,14 +75,14 @@ $(function() {
     alert("You pressed rock, suckah")
 
   })
-  paper.click(function() {
+  paper.click(function () {
     db.ref().push({
       name: name,
       choice: "paper"
     })
     alert("You pressed paper, suckah")
   })
-  scissors.click(function() {
+  scissors.click(function () {
     db.ref().push({
       name: name,
       choice: "scissors"
@@ -87,12 +90,12 @@ $(function() {
     alert("You pressed scissors, suckah")
   })
 
-  nameSubmit.click(function() {
+  nameSubmit.click(function () {
     name = nameInput.val()
     nameValidation(name)
   })
 
-  gameSubmit.click(function() {
+  gameSubmit.click(function () {
     name = $("#game-input").val()
     $(this).prop("disabled", true)
     $("#game-input").prop("disabled", true)
@@ -100,7 +103,7 @@ $(function() {
 
 
 
-  window.addEventListener("unload", function(e) {
+  window.addEventListener("unload", function (e) {
     db.ref().set({
       unloaded: "yes"
     })

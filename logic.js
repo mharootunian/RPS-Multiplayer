@@ -1,3 +1,7 @@
+//TODOS:
+//Check if another player is joined in game, or when a player does join
+//check if player made a move and compare moves
+
 let rock = $("#submit-rock"),
   paper = $("#submit-paper"),
   scissors = $("#submit-scissors")
@@ -16,8 +20,10 @@ function nameValidation(name) {
   if (name === "" || name === null) {
     alert("please fill out a name and try again")
   } else {
-    nameSubmit.attr("disabled", "true")
-    nameInput.attr("disabled", "true")
+    nameSubmit.prop("disabled", true)
+    nameInput.prop("disabled", true)
+    gameInput.prop("disabled", false)
+    gameSubmit.prop("disabled", false)
   }
 }
 
@@ -33,6 +39,12 @@ function joingGame() {
     }
   })
 }
+
+rock.prop("disabled", "true")
+paper.prop("disabled", "true")
+scissors.prop("disabled", "true")
+gameSubmit.prop("disabled", "true")
+gameInput.prop("disabled", "true")
 
 var firebaseConfig = {
   apiKey: "AIzaSyAe5LFUQ4xcX82zYTlVqrHtkV9SBF2Lw0Q",
@@ -82,8 +94,8 @@ $(function() {
 
   gameSubmit.click(function() {
     name = $("#game-input").val()
-    $(this).attr("disabled", "true")
-    $("#game-input").attr("disabled", "true")
+    $(this).prop("disabled", true)
+    $("#game-input").prop("disabled", true)
   })
 
 
@@ -94,5 +106,5 @@ $(function() {
     })
   })
 
-  $("#name-div").attr("disabled", "true")
+  $("#name-div").prop("disabled", true)
 })

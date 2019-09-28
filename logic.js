@@ -14,6 +14,8 @@ let game,
   gameInput = $("#game-input"),
   gameSubmit = $("#submit-game")
 
+let player
+
 function nameValidation(name) {
   if (name === "" || name === null) {
     alert("please fill out a name and try again")
@@ -36,10 +38,18 @@ function joinGame() {
       let data = snapshot.val()
       console.log(data)
       if (data.gameData.players === 1) {
+        player = 2
+        db.ref(`${game}/gameData`).update({
+          players: 2        
+        })
         startGame()
       } else if (data.gameData.players > 1) {
         alert("nope, it dun broked")
       } else {
+        player = 1
+        db.ref(`${game}/gameData`).update({
+          players: 1        
+        })
         alert("waiting for player 2")
       }
     }

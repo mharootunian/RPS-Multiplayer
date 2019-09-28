@@ -15,7 +15,6 @@ let game,
   gameSubmit = $("#submit-game")
 
 
-
 function nameValidation(name) {
   if (name === "" || name === null) {
     alert("please fill out a name and try again")
@@ -108,6 +107,19 @@ $(function () {
       unloaded: "yes"
     })
   })
+
+  $("#asd").click(function() {
+    db.ref("/meero").set({
+      name: "meero"
+    })
+  })
+
+    $("#dsa").click(function() {
+    db.ref().orderByChild("ID").equalTo("name").once("value", function(snapshot) {
+
+    })
+  })
+
 
   $("#name-div").prop("disabled", true)
 })

@@ -6,7 +6,7 @@ let rock = $("#submit-rock"),
   paper = $("#submit-paper"),
   scissors = $("#submit-scissors")
 
-let name,
+let playerName,
   nameInput = $("#name-input"),
   nameSubmit = $("#submit-name")
 
@@ -14,11 +14,11 @@ let game,
   gameInput = $("#game-input"),
   gameSubmit = $("#submit-game")
 
-
 function nameValidation(name) {
   if (name === "" || name === null) {
     alert("please fill out a name and try again")
   } else {
+    playerName = name;
     nameSubmit.prop("disabled", true)
     nameInput.prop("disabled", true)
     gameInput.prop("disabled", false)
@@ -29,16 +29,21 @@ function nameValidation(name) {
   }
 }
 
-function joingGame() {
-  db.ref().once("value", function (snapshot) {
-    let data = snapshot.val()
-    if (data.players === 2) {
-      startGame()
-    } else if (data.players > 2) {
-      alert("nope, it dun broked")
-    } else {
-      alert("waiting for player 2")
+function joinGame() {
+  db.ref(`${game}`).once("value", function (snapshot) {
+
+    if (snapshot.exists()) {
+      let data = snapshot.val()
+      console.log(data)
+      if (data.gameData.players === 1) {
+        startGame()
+      } else if (data.gameData.players > 1) {
+        alert("nope, it dun broked")
+      } else {
+        alert("waiting for player 2")
+      }
     }
+
   })
 }
 
@@ -67,7 +72,7 @@ $(function () {
   //db.ref().on("")
 
   rock.click(function () {
-    db.ref().push({
+    db.ref(`${game}/${playerName}`).update({
       name: name,
       choice: "rock"
     })
@@ -75,14 +80,14 @@ $(function () {
 
   })
   paper.click(function () {
-    db.ref().push({
+    db.ref(`${game}/${playerName}`).update({
       name: name,
       choice: "paper"
     })
     alert("You pressed paper, suckah")
   })
   scissors.click(function () {
-    db.ref().push({
+    db.ref(`${game}/${playerName}`).update({
       name: name,
       choice: "scissors"
     })
@@ -95,9 +100,10 @@ $(function () {
   })
 
   gameSubmit.click(function () {
-    name = $("#game-input").val()
+    game = $("#game-input").val()
     $(this).prop("disabled", true)
     $("#game-input").prop("disabled", true)
+    joinGame()
   })
 
 
@@ -108,15 +114,23 @@ $(function () {
     })
   })
 
-  $("#asd").click(function() {
-    db.ref("/meero").set({
+  $("#asd").click(function () {
+    db.ref("/newGame/meero").set({
       name: "meero"
+    })
+
+    db.ref("newGame/gameData").set({
+      players: 1
     })
   })
 
-    $("#dsa").click(function() {
-    db.ref().orderByChild("ID").equalTo("name").once("value", function(snapshot) {
-
+  $("#dsa").click(function () {
+    db.ref(`${game}/${playerName}`).once("value", function (snapshot) {
+      if (snapshot.exists()) {
+        alert("record exists")
+      } else {
+        alert("record does not exist")
+      }
     })
   })
 

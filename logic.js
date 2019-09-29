@@ -52,6 +52,8 @@ function joinGame() {
         })
         alert("waiting for player 2")
       }
+    } else {
+      
     }
 
   })
@@ -82,23 +84,23 @@ $(function () {
   //db.ref().on("")
 
   rock.click(function () {
-    db.ref(`${game}/${playerName}`).update({
-      name: name,
+    db.ref(`${game}`).update({
+      player: player,
       choice: "rock"
     })
     alert("You pressed rock, suckah")
 
   })
   paper.click(function () {
-    db.ref(`${game}/${playerName}`).update({
-      name: name,
+    db.ref(`${game}`).update({
+      name: player,
       choice: "paper"
     })
     alert("You pressed paper, suckah")
   })
   scissors.click(function () {
-    db.ref(`${game}/${playerName}`).update({
-      name: name,
+    db.ref(`${game}`).update({
+      name: player,
       choice: "scissors"
     })
     alert("You pressed scissors, suckah")

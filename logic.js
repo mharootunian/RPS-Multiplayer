@@ -16,6 +16,9 @@ let game,
 
 let player
 
+let player1Choice = "!",
+  player2Choice = "!"
+
 function nameValidation(name) {
   if (name === "" || name === null) {
     alert("please fill out a name and try again")
@@ -31,29 +34,66 @@ function nameValidation(name) {
   }
 }
 
+function startGame() {
+
+}
+
+function whoWon() {
+  if (player1Choice === "rock" && player2Choice === "rock") {
+    return "tie"
+  }
+  if (player1Choice === "rock" && player2Choice === "paper") {
+    return "player2"
+  }
+  if (player1Choice === "rock" && player2Choice === "scissors") {
+    return "player1"
+  }
+
+  if (player1Choice === "paper" && player2Choice === "rock") {
+    return "player1"
+  }
+  if (player1Choice === "paper" && player2Choice === "paper") {
+    return "tie" 
+  }
+  if (player1Choice === "paper" && player2Choice === "scissors") {
+    return "player2"
+  }
+
+  if (player1Choice === "scissors" && player2Choice === "rock") {
+    return "player2"
+  }
+  if (player1Choice === "scissors" && player2Choice === "paper") {
+    return "player1"    
+  }
+  if (player1Choice === "scissors" && player2Choice === "scissors") {
+    return "tie"
+    
+  }
+}
+
 function joinGame() {
-  db.ref(`${game}`).once("value", function (snapshot) {
+  db.ref().once("value", function (snapshot) {
 
     if (snapshot.exists()) {
       let data = snapshot.val()
       console.log(data)
       if (data.gameData.players === 1) {
         player = 2
-        db.ref(`${game}/gameData`).update({
-          players: 2        
+        db.ref(`/gameData`).set({
+          players: 2
         })
-        startGame()
-      } else if (data.gameData.players > 1) {
+      } else if (data.gameData.players >= 2) {
         alert("nope, it dun broked")
       } else {
-        player = 1
-        db.ref(`${game}/gameData`).update({
-          players: 1        
-        })
-        alert("waiting for player 2")
+
       }
     } else {
-      
+      console.log("PLAYER 1")
+      player = 1
+      db.ref(`/gameData`).set({
+        players: 1
+      })
+      alert("waiting for player 2")
     }
 
   })
@@ -81,28 +121,79 @@ let db = firebase.database()
 
 $(function () {
 
-  //db.ref().on("")
+  db.ref("/player1Choice").on("value", function (snapshot) {
+    let data = snapshot.val()
+    console.log(`player1Choice Response: ${data}`)
+    if (data === null) {
+      //alert(`player1 has not chosen`)
+    } else {
+      alert(`player1 has chosen: ${data}`)
+      player1Choice = data
+      console.log("p1 choice: " + player1Choice)
+      console.log("p1c:" + player1Choice + " && p2c: " + player2Choice)
+
+      if (player1Choice !== "!" && player2Choice !== "!") {
+        alert("both players have chosen!")
+        alert(whoWon())
+      }
+    }
+  })
+  db.ref("/player2Choice").on("value", function (snapshot) {
+    let data = snapshot.val()
+    console.log(`player2Choice Response: ${data}`)
+
+    if (data === null) {
+      //alert(`player2 has not chosen`)
+    } else {
+      alert(`player2 has chosen: ${data}`)
+      player2Choice = data
+      console.log("p2 choice: " + player2Choice)
+      console.log("p1c:" + player1Choice + " && p2c: " + player2Choice)
+      if (player1Choice !== "!" && player2Choice !== "!") {
+        alert("both players have chosen!")
+        alert(whoWon())
+      }
+    }
+  })
+
+
+
 
   rock.click(function () {
-    db.ref(`${game}`).update({
-      player: player,
-      choice: "rock"
-    })
+    if (player === 1) {
+      db.ref().update({
+        player1Choice: "rock"
+      })
+    } else {
+      db.ref().update({
+        player2Choice: "rock"
+      })
+    }
     alert("You pressed rock, suckah")
 
   })
   paper.click(function () {
-    db.ref(`${game}`).update({
-      name: player,
-      choice: "paper"
-    })
+    if (player === 1) {
+      db.ref().update({
+        player1Choice: "paper"
+      })
+    } else {
+      db.ref().update({
+        player2Choice: "paper"
+      })
+    }
     alert("You pressed paper, suckah")
   })
   scissors.click(function () {
-    db.ref(`${game}`).update({
-      name: player,
-      choice: "scissors"
-    })
+    if (player === 1) {
+      db.ref().update({
+        player1Choice: "scissors"
+      })
+    } else {
+      db.ref().update({
+        player2Choice: "scissors"
+      })
+    }
     alert("You pressed scissors, suckah")
   })
 
@@ -119,19 +210,19 @@ $(function () {
   })
 
 
-
+  //This code block triggers when the page closes, or changes
   window.addEventListener("unload", function (e) {
-    db.ref().set({
-      unloaded: "yes"
-    })
+    //db.ref().set({
+    //  unloaded: "yes"
+    //})
   })
 
   $("#asd").click(function () {
-    db.ref("/newGame/meero").set({
+    db.ref().set({
       name: "meero"
     })
 
-    db.ref("newGame/gameData").set({
+    db.ref("/gameData").set({
       players: 1
     })
   })

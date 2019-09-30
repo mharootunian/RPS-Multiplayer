@@ -35,7 +35,12 @@ function nameValidation(name) {
 }
 
 function startGame() {
+  player1Choice = "!"
+  player2Choice = "!"
 
+  db.ref().set({
+    
+  })
 }
 
 function whoWon() {
@@ -216,27 +221,6 @@ $(function () {
     //  unloaded: "yes"
     //})
   })
-
-  $("#asd").click(function () {
-    db.ref().set({
-      name: "meero"
-    })
-
-    db.ref("/gameData").set({
-      players: 1
-    })
-  })
-
-  $("#dsa").click(function () {
-    db.ref(`${game}/${playerName}`).once("value", function (snapshot) {
-      if (snapshot.exists()) {
-        alert("record exists")
-      } else {
-        alert("record does not exist")
-      }
-    })
-  })
-
 
   $("#name-div").prop("disabled", true)
 })

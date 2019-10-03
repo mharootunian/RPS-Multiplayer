@@ -34,6 +34,8 @@ $(function () {
 
   let db = firebase.database()
 
+  writeScores()
+
   rock.prop("disabled", true)
   paper.prop("disabled", true)
   scissors.prop("disabled", true)
@@ -168,6 +170,10 @@ $(function () {
       ties: ties
     })
 
+    writeScores()
+  }
+
+  function writeScores() {
     $("#p1Wins").text(player1Wins)
     $("#p1Losses").text(player1Losses)
     $("#p2Wins").text(player2Wins)
@@ -200,8 +206,8 @@ $(function () {
     if (snapshot.exists()) { // if player1 choice exists...
       if (snapshot.val().player1Choice !== undefined && snapshot.val().player2Choice !== undefined) {
         if (snapshot.val().player1Choice !== "!" && snapshot.val().player2Choice !== "!") {
-          alert("both players have chosen")
           endGame(snapshot.val().player1Choice, snapshot.val().player2Choice)
+          alert("both players have chosen")
         }
       }
 
@@ -216,7 +222,7 @@ $(function () {
         $("#p2Choice").text("Waiting...")
       }
     } else {
-      alert("player 1 choice doesnt exist")
+      //alert("player 1 choice doesnt exist")
     }
   })
 

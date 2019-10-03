@@ -174,7 +174,6 @@ $(function () {
         player2Choice: "rock"
       })
     }
-    alert("You pressed rock, suckah")
 
   })
   paper.click(function () {
@@ -187,7 +186,7 @@ $(function () {
         player2Choice: "paper"
       })
     }
-    alert("You pressed paper, suckah")
+
   })
   scissors.click(function () {
     if (player === 1) {
@@ -199,7 +198,7 @@ $(function () {
         player2Choice: "scissors"
       })
     }
-    alert("You pressed scissors, suckah")
+
   })
 
   nameSubmit.click(function () {

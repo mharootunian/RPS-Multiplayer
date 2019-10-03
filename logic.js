@@ -206,8 +206,8 @@ $(function () {
     if (snapshot.exists()) { // if player1 choice exists...
       if (snapshot.val().player1Choice !== undefined && snapshot.val().player2Choice !== undefined) {
         if (snapshot.val().player1Choice !== "!" && snapshot.val().player2Choice !== "!") {
-          alert("both players have chosen")
           endGame(snapshot.val().player1Choice, snapshot.val().player2Choice)
+          alert("both players have chosen")
         }
       }
 
@@ -222,7 +222,7 @@ $(function () {
         $("#p2Choice").text("Waiting...")
       }
     } else {
-      alert("player 1 choice doesnt exist")
+      //alert("player 1 choice doesnt exist")
     }
   })
 

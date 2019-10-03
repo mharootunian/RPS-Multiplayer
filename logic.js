@@ -40,35 +40,51 @@ function startGame() {
 
 function whoWon() {
   if (player1Choice === "rock" && player2Choice === "rock") {
+    resetGame()
     return "tie"
   }
   if (player1Choice === "rock" && player2Choice === "paper") {
+    resetGame()
     return "player2"
   }
   if (player1Choice === "rock" && player2Choice === "scissors") {
+    resetGame()
     return "player1"
   }
 
   if (player1Choice === "paper" && player2Choice === "rock") {
+    resetGame()
     return "player1"
   }
   if (player1Choice === "paper" && player2Choice === "paper") {
-    return "tie" 
+    resetGame()
+    return "tie"
   }
   if (player1Choice === "paper" && player2Choice === "scissors") {
+    resetGame()
     return "player2"
   }
 
   if (player1Choice === "scissors" && player2Choice === "rock") {
+    resetGame()
     return "player2"
   }
   if (player1Choice === "scissors" && player2Choice === "paper") {
-    return "player1"    
+    resetGame()
+    return "player1"
   }
   if (player1Choice === "scissors" && player2Choice === "scissors") {
+    resetGame()
     return "tie"
-    
   }
+
+}
+
+function resetGame() {
+  db.ref().update({
+    player1Choice: "!",
+    player2Choice: "!"
+  })
 }
 
 function joinGame() {
@@ -123,41 +139,52 @@ $(function () {
 
   db.ref("/player1Choice").on("value", function (snapshot) {
     let data = snapshot.val()
-    console.log(`player1Choice Response: ${data}`)
-    if (data === null) {
-      //alert(`player1 has not chosen`)
+    console.log("Player1 choice: " + data)
+    if (data === "!") {
+      console.log("equals !")
+      //dont do anything
     } else {
-      alert(`player1 has chosen: ${data}`)
-      player1Choice = data
-      console.log("p1 choice: " + player1Choice)
-      console.log("p1c:" + player1Choice + " && p2c: " + player2Choice)
+      console.log(`player1Choice Response: ${data}`)
+      if (data === null) {
+        //alert(`player1 has not chosen`)
+      } else {
+        alert(`player1 has chosen: ${data}`)
+        player1Choice = data
+        console.log("p1 choice: " + player1Choice)
+        console.log("p1c:" + player1Choice + " && p2c: " + player2Choice)
 
-      if (player1Choice !== "!" && player2Choice !== "!") {
-        alert("both players have chosen!")
-        alert(whoWon())
+        if (player1Choice !== "!" && player2Choice !== "!") {
+          alert("both players have chosen!")
+          alert(whoWon())
+        }
       }
     }
   })
+
   db.ref("/player2Choice").on("value", function (snapshot) {
     let data = snapshot.val()
     console.log(`player2Choice Response: ${data}`)
+    console.log("Player2 choice: " + data)
 
-    if (data === null) {
-      //alert(`player2 has not chosen`)
+    if (data === "!") {
+      console.log("equals !")
+
+      //dont do anything
     } else {
-      alert(`player2 has chosen: ${data}`)
-      player2Choice = data
-      console.log("p2 choice: " + player2Choice)
-      console.log("p1c:" + player1Choice + " && p2c: " + player2Choice)
-      if (player1Choice !== "!" && player2Choice !== "!") {
-        alert("both players have chosen!")
-        alert(whoWon())
+      if (data === null) {
+        //alert(`player2 has not chosen`)
+      } else {
+        alert(`player2 has chosen: ${data}`)
+        player2Choice = data
+        console.log("p2 choice: " + player2Choice)
+        console.log("p1c:" + player1Choice + " && p2c: " + player2Choice)
+        if (player1Choice !== "!" && player2Choice !== "!") {
+          alert("both players have chosen!")
+          alert(whoWon())
+        }
       }
     }
   })
-
-
-
 
   rock.click(function () {
     if (player === 1) {
@@ -215,26 +242,6 @@ $(function () {
     //db.ref().set({
     //  unloaded: "yes"
     //})
-  })
-
-  $("#asd").click(function () {
-    db.ref().set({
-      name: "meero"
-    })
-
-    db.ref("/gameData").set({
-      players: 1
-    })
-  })
-
-  $("#dsa").click(function () {
-    db.ref(`${game}/${playerName}`).once("value", function (snapshot) {
-      if (snapshot.exists()) {
-        alert("record exists")
-      } else {
-        alert("record does not exist")
-      }
-    })
   })
 
 

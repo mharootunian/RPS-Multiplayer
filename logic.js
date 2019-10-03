@@ -161,9 +161,24 @@ $(function () {
 
   }
 
-  function resetGame() {
-
+  function sendMessage() {
+    let msg = $("#msg-to-send").val()
+    db.ref("messages").push({
+      name: player,
+      msg: msg
+    })
   }
+
+  $("#send-msg").click(function() {
+    sendMessage()
+  })
+
+  db.ref("messages").on("child_added", function(snapshot) {
+    let data = snapshot.val()
+    let newRow = $("<option>")
+    newRow.text(`${data.name}: ${data.msg}`)
+    $("#msgs").append(newRow)
+  })
 
   db.ref().on("value", function (snapshot) {
       if (snapshot.exists()) { // if player1 choice exists...

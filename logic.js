@@ -34,6 +34,8 @@ $(function () {
 
   let db = firebase.database()
 
+  writeScores()
+
   rock.prop("disabled", true)
   paper.prop("disabled", true)
   scissors.prop("disabled", true)
@@ -168,6 +170,10 @@ $(function () {
       ties: ties
     })
 
+    writeScores()
+  }
+
+  function writeScores() {
     $("#p1Wins").text(player1Wins)
     $("#p1Losses").text(player1Losses)
     $("#p2Wins").text(player2Wins)
